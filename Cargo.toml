@@ -1,0 +1,16 @@
+[package]
+name = "samp-rustquest"
+version = "0.1.0"
+edition = "2021"
+authors = ["GalassoX"]
+description = "Plugin to make HTTP request in SA:MP"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+samp = "0.1.2"
+reqwest = "0.11.13"
+json = "0.12.4"
