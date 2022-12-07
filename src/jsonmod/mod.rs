@@ -21,11 +21,11 @@ impl super::Rustquest {
         &mut self,
         _amx: &Amx,
         json_id: usize,
-        prop_name: AmxString,
+        key: AmxString,
         mut dest: Ref<u32>,
     ) -> AmxResult<bool> {
         match self.jsons.get(&(json_id as i32)) {
-            Some(json) => match json[prop_name.to_string().as_str()].as_u32() {
+            Some(json) => match json[key.to_string().as_str()].as_u32() {
                 Some(v) => {
                     *dest = v;
                     Ok(true)
@@ -40,13 +40,13 @@ impl super::Rustquest {
         &mut self,
         _amx: &Amx,
         json_id: usize,
-        prop_name: AmxString,
+        key: AmxString,
         value: u32,
     ) -> AmxResult<bool> {
         match self.jsons.get(&(json_id as i32)) {
             Some(json) => {
                 let mut object = json.to_owned();
-                object[prop_name.to_string()] = value.into();
+                object[key.to_string()] = value.into();
                 self.jsons.insert(json_id as i32, object);
                 Ok(true)
             }
