@@ -1,31 +1,20 @@
 // mod internal;
 // mod plugin;
+mod jsonmod;
 use std::collections::HashMap;
 
 // use plugin::Rustquest;
 use json::*;
-use samp::{
-    initialize_plugin, native,
-    prelude::{Amx, AmxResult, AmxString, SampPlugin},
-};
-
+use samp::{initialize_plugin, prelude::SampPlugin};
 pub struct Rustquest {
     jsons: HashMap<i32, JsonValue>,
 }
 
 impl SampPlugin for Rustquest {
     fn on_load(&mut self) {
-        // info!("Version: 0.1.0")
         println!("Version: 0.1.0");
     }
 }
-// use std::collections::HashMap;
-// use std::collections::LinkedList;
-
-// use samp::args;
-// use samp::error::AmxError;
-// use samp::native;
-// use samp::prelude::*;
 
 impl Rustquest {
     // #[native(name = "Request")]
@@ -35,40 +24,16 @@ impl Rustquest {
     //         .ok_or(AmxError::Params)?
     //         .to_string();
     // }
-
-    #[native(name = "JSON_Create")]
-    fn create_json(&mut self, amx: &Amx) -> AmxResult<i32> {
-        let json = JsonValue::new_object();
-        let key = self.jsons.len() as i32;
-        self.jsons.insert(key, json);
-        Ok(key)
-    }
-
-    #[native(name = "JSON_GetInt")]
-    fn get_json(
-        &mut self,
-        amx: &Amx,
-        json_id: usize,
-        prop_name: AmxString,
-        mut dest: usize,
-    ) -> AmxResult<bool> {
-        match self.jsons.get(&(json_id as i32)) {
-            Some(json) => match json[prop_name.to_string().as_str()].as_usize() {
-                Some(v) => {
-                    dest = v;
-                    Ok(true)
-                }
-                None => Ok(false),
-            },
-            None => Ok(false),
-        }
-    }
 }
 
 initialize_plugin!(
     natives: [
         Rustquest::create_json,
-        Rustquest::get_json
+        Rustquest::json_get_int,
+        Rustquest::json_set_int,
+        // RustquestJson::create_json,
+        // RustquestJson::json_get_int,
+        // RustquestJson::json_set_int,
     ], {
         Rustquest {
             jsons: HashMap::new(),
@@ -76,6 +41,6 @@ initialize_plugin!(
     }
 );
 
-fn print_type<T>(_: &T) {
-    println!("{}", std::any::type_name::<T>())
-}
+// fn print_type<T>(_: &T) {
+//     println!("{}", std::any::type_name::<T>())
+// }
