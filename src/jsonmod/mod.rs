@@ -1,7 +1,7 @@
 use json::*;
 use samp::{
     native,
-    prelude::{Amx, AmxResult, AmxString, Ref},
+    prelude::{Amx, AmxResult, AmxString, Ref, UnsizedBuffer},
 };
 
 impl super::Rustquest {
@@ -47,6 +47,47 @@ impl super::Rustquest {
             Some(json) => {
                 let mut object = json.to_owned();
                 object[key.to_string()] = value.into();
+                self.jsons.insert(json_id as i32, object);
+                Ok(true)
+            }
+            None => Ok(false),
+        }
+    }
+
+    #[native(name = "JSON_GetString")]
+    pub fn json_get_str(
+        &mut self,
+        _amx: &Amx,
+        json_id: usize,
+        key: AmxString,
+        dest: UnsizedBuffer,
+        size: usize,
+    ) -> AmxResult<bool> {
+        match self.jsons.get(&(json_id as i32)) {
+            Some(json) => match json[key.to_string().as_str()].as_str() {
+                Some(v) => {
+                    let mut buffer = dest.into_sized_buffer(size);
+                    let _ = samp::cell::string::put_in_buffer(&mut buffer, v);
+                    Ok(true)
+                }
+                None => Ok(false),
+            },
+            None => Ok(false),
+        }
+    }
+
+    #[native(name = "JSON_SetString")]
+    pub fn json_set_str(
+        &mut self,
+        _amx: &Amx,
+        json_id: usize,
+        key: AmxString,
+        value: AmxString,
+    ) -> AmxResult<bool> {
+        match self.jsons.get(&(json_id as i32)) {
+            Some(json) => {
+                let mut object = json.to_owned();
+                object[key.to_string()] = value.to_string().into();
                 self.jsons.insert(json_id as i32, object);
                 Ok(true)
             }
