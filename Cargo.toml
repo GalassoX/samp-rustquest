@@ -12,5 +12,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 samp = "0.1.2"
-reqwest = "0.11.13"
+reqwest = {version = "0.11.13", features = ["blocking", "json"]}
 json = "0.12.4"
+threadpool = "1.8.1"
+log = "0.4.17"
+fern = "0.5.7"

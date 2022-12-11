@@ -5,3 +5,5 @@ native JSON_SetInt(jsonid, key[], value);
 
 native JSON_GetString(jsonid, key[], dest[], size = sizeof dest);
 native JSON_SetString(jsonid, key[], value[]);
+
+native Request_Get(url[], callback[]);
