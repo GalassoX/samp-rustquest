@@ -1,4 +1,4 @@
-native JSON_Create(source = "");
+native JSON_Create(source[] = "");
 
 native JSON_GetInt(jsonid, key[], &dest);
 native JSON_SetInt(jsonid, key[], value);
