@@ -73,7 +73,7 @@ initialize_plugin!(
         Rustquest::json_set_int,
         Rustquest::json_get_str,
         Rustquest::json_set_str,
-        Rustquest::request_get,
+        Rustquest::request,
         Rustquest::json_create_arr,
         Rustquest::json_arr_to_str,
         Rustquest::json_arr_add_int,

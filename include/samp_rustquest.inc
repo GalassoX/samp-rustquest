@@ -19,4 +19,6 @@ native JSON_ArrayGetFloat(arrid, index, &Float:dest);
 native JSON_ArrayGetString(arrid, index, dest[], size = sizeof dest);
 
 //-> Request
-native Request_Get(url[], callback[]);
+#define HTTP_GET        "GET"
+#define HTTP_POST       "POST"
+native Request(url[], callback[], method[], data[] = "");
