@@ -73,7 +73,17 @@ initialize_plugin!(
         Rustquest::json_set_int,
         Rustquest::json_get_str,
         Rustquest::json_set_str,
-        Rustquest::request_get
+        Rustquest::request_get,
+        Rustquest::json_create_arr,
+        Rustquest::json_arr_to_str,
+        Rustquest::json_arr_add_int,
+        Rustquest::json_arr_add_float,
+        Rustquest::json_arr_add_str,
+        Rustquest::json_arr_is_int,
+        Rustquest::json_arr_is_str,
+        Rustquest::json_arr_get_int,
+        Rustquest::json_arr_get_float,
+        Rustquest::json_arr_get_str
     ], {
         samp::plugin::enable_process_tick();
 
