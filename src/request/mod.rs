@@ -6,7 +6,7 @@ use samp::{
     prelude::{Amx, AmxResult, AmxString},
 };
 
-use self::internal::{request_get, request_post};
+use self::internal::{request_delete, request_get, request_patch, request_post, request_put};
 
 impl super::Rustquest {
     #[native(name = "Request")]
@@ -32,6 +32,21 @@ impl super::Rustquest {
             "post" => {
                 self.threads
                     .execute(move || request_post(sender, request_id, url, callback, data));
+                Ok(request_id)
+            }
+            "put" => {
+                self.threads
+                    .execute(move || request_put(sender, request_id, url, callback, data));
+                Ok(request_id)
+            }
+            "patch" => {
+                self.threads
+                    .execute(move || request_patch(sender, request_id, url, callback, data));
+                Ok(request_id)
+            }
+            "delete" => {
+                self.threads
+                    .execute(move || request_delete(sender, request_id, url, callback, data));
                 Ok(request_id)
             }
             _ => {
