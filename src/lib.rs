@@ -15,8 +15,8 @@ use samp::{
 use threadpool::ThreadPool;
 pub struct Rustquest {
     jsons: HashMap<i32, JsonValue>,
-    request_sender: Option<Sender<(i32, String, String)>>,
-    request_receiver: Option<Receiver<(i32, String, String)>>,
+    request_sender: Option<Sender<(i32, String, u16, String)>>,
+    request_receiver: Option<Receiver<(i32, String, u16, String)>>,
     request_count: i32,
     threads: ThreadPool,
     amx_list: Vec<AmxIdent>,
@@ -46,7 +46,9 @@ impl SampPlugin for Rustquest {
     }
 
     fn process_tick(&mut self) {
-        for (request_id, callback, data) in self.request_receiver.as_ref().unwrap().try_iter() {
+        for (request_id, callback, status_code, data) in
+            self.request_receiver.as_ref().unwrap().try_iter()
+        {
             let mut executed = false;
 
             for amx in &self.amx_list {
@@ -54,7 +56,7 @@ impl SampPlugin for Rustquest {
                     if let Ok(_) = amx.find_public(&callback) {
                         let allocator = amx.allocator();
                         let amx_str = allocator.allot_string(data.as_str()).unwrap();
-                        let _ = exec_public!(amx, &callback, request_id, amx_str);
+                        let _ = exec_public!(amx, &callback, request_id, status_code, amx_str);
                         executed = true;
                     }
                 }

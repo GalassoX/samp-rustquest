@@ -1,12 +1,11 @@
 mod internal;
 
+use self::internal::{request_ex, request_get};
 use log::error;
 use samp::{
     native,
     prelude::{Amx, AmxResult, AmxString},
 };
-
-use self::internal::{request_delete, request_get, request_patch, request_post, request_put};
 
 impl super::Rustquest {
     #[native(name = "Request")]
@@ -23,30 +22,35 @@ impl super::Rustquest {
         let callback = callback.to_string();
         let sender = self.request_sender.clone();
         let data = data.to_string();
-        match method.to_string().to_lowercase().as_str() {
+        let method_str = method.to_string();
+        match method_str.to_lowercase().as_str() {
             "get" => {
                 self.threads
                     .execute(move || request_get(sender, request_id, url, callback));
                 Ok(request_id)
             }
             "post" => {
-                self.threads
-                    .execute(move || request_post(sender, request_id, url, callback, data));
+                self.threads.execute(move || {
+                    request_ex(method_str, sender, request_id, url, callback, data)
+                });
                 Ok(request_id)
             }
             "put" => {
-                self.threads
-                    .execute(move || request_put(sender, request_id, url, callback, data));
+                self.threads.execute(move || {
+                    request_ex(method_str, sender, request_id, url, callback, data)
+                });
                 Ok(request_id)
             }
             "patch" => {
-                self.threads
-                    .execute(move || request_patch(sender, request_id, url, callback, data));
+                self.threads.execute(move || {
+                    request_ex(method_str, sender, request_id, url, callback, data)
+                });
                 Ok(request_id)
             }
             "delete" => {
-                self.threads
-                    .execute(move || request_delete(sender, request_id, url, callback, data));
+                self.threads.execute(move || {
+                    request_ex(method_str, sender, request_id, url, callback, data)
+                });
                 Ok(request_id)
             }
             _ => {
